@@ -3,18 +3,18 @@
 //2/9/18
 
 #include <stdio.h>
+//#include <stdlib.h>
 #include <string.h>
+#include <wiringPi.h>
 
-int export();
-int unexport();
-int direction(char *direction, char *pin);
-int value(char *value, char *pin);
-int pinSetup();
 
 int main(int argc, char *argv[]) {
 	//toggles LEDs on GPIO 1-7 based on user desired input from command line argument
 	//-help or -h returns instructions on usage
 	//input can be entered as intiger, binary, octal or hex values using c syntax
+	
+	int decimal, octal, hex, out;
+	int mask = 0b00000001;
 	
 	if (argc < 2) {
 		printf("partB needs a value to toggle LEDs, decimal, binary, octal or hex may be used.\n");
@@ -26,40 +26,39 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	return 0;
-}
+	//sets up wiringpi
+	wiringPiSetup();
+	pinMode(0,OUTPUT);
+	pinMode(1,OUTPUT);
+	pinMode(2,OUTPUT);
+	pinMode(3,OUTPUT);
+	pinMode(4,OUTPUT);
+	pinMode(5,OUTPUT);
+	pinMode(6,OUTPUT);
+	pinMode(7,OUTPUT);
 
-int export() {
-	//using wiringpi to export all used GPIO pins
-	//pins used are 0-7
-	//add error checking
+	//Parses input for desired LEDs
+	sscanf(argv[1], "%d\n", &decimal);
+	sscanf(argv[1], "0%o\n", &octal);
+	sscanf(argv[1], "0x%x\n", &hex);
+	printf("int = %d\noctal = %d\nhex = %d\n", decimal, octal, hex); // used for debugging sscanff()
+	out = decimal + octal + hex; //sets one variable to be used for toggling LEDs
+
 	
-	system("cd /sys/class/gpio && echo 0 > export");
-	system("cd /sys/class/gpio && echo 1 > export");
-	system("cd /sys/class/gpio && echo 2 > export");
-	system("cd /sys/class/gpio && echo 3 > export");
-	system("cd /sys/class/gpio && echo 4 > export");
-	system("cd /sys/class/gpio && echo 5 > export");
-	system("cd /sys/class/gpio && echo 6 > export");
-	system("cd /sys/class/gpio && echo 7 > export");
+	//turns on LEDs
+	//digitalWrite(pin, value);
+	for (int i=0; i < 8; i++) {
+		if (mask & out) {
+			digitalWrite(i, LOW);
+		}
+		else {
+			digitalWrite(i, HIGH);
+		}
 
-	return 0;
-}
+		mask = mask << 1;
+	}
 
-int unexport() {
-	//using wiringpi to unexport all used GPIO pins
-	//pins used are 0-7
-	//add error checking
+	while (1){;} //deadloop for debugging
 	
-	system("cd /sys/class/gpio && echo 0 > unexport");
-	system("cd /sys/class/gpio && echo 1 > unexport");
-	system("cd /sys/class/gpio && echo 2 > unexport");
-	system("cd /sys/class/gpio && echo 3 > unexport");
-	system("cd /sys/class/gpio && echo 4 > unexport");
-	system("cd /sys/class/gpio && echo 5 > unexport");
-	system("cd /sys/class/gpio && echo 6 > unexport");
-	system("cd /sys/class/gpio && echo 7 > unexport");
-	system("cd /sys/class/gpio && echo 8 > unexport");
-
 	return 0;
 }
