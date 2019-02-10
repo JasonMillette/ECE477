@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
 	//-help or -h returns instructions on usage
 	//input can be entered as intiger, binary, octal or hex values using c syntax
 	
-	int decimal, octal, hex, out;
+	int out;
 	int mask = 0b00000001;
 	
 	if (argc < 2) {
@@ -38,16 +38,21 @@ int main(int argc, char *argv[]) {
 	pinMode(7,OUTPUT);
 
 	//Parses input for desired LEDs
-	sscanf(argv[1], "%d\n", &decimal);
-	sscanf(argv[1], "0%o\n", &octal);
-	sscanf(argv[1], "0x%x\n", &hex);
-	printf("int = %d\noctal = %d\nhex = %d\n", decimal, octal, hex); // used for debugging sscanff()
-	out = decimal + octal + hex; //sets one variable to be used for toggling LEDs
-
+	//checks which input method was used then saves the value to the int out
+	if (argv[1][0] == '0') { //Checks for leading 0, for either hex or octal
+		if (argv[1][1] == 'x') { //checks for x, for hex
+			sscanf(argv[1], "0x%X\n", &out);
+		}
+		else {
+			sscanf(argv[1], "0%o\n", &out);
+		}
+	} else {
+		sscanf(argv[1], "%d\n", &out);
+	}
 	
-	//turns on LEDs
+	//turns on LEDs based on value of out
 	//digitalWrite(pin, value);
-	for (int i=0; i < 8; i++) {
+	for (int i=0; i < 8; i++) { //runs through loop for every LED
 		if (mask & out) {
 			digitalWrite(i, LOW);
 		}
@@ -55,10 +60,8 @@ int main(int argc, char *argv[]) {
 			digitalWrite(i, HIGH);
 		}
 
-		mask = mask << 1;
+		mask = mask << 1; //shifts mask to check for the next LED
 	}
 
-	while (1){;} //deadloop for debugging
-	
 	return 0;
 }

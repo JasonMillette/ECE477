@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -02 -Wall -g
+CFLAGS = -Wall -g
 
 all:	partA partB
 
@@ -9,11 +9,8 @@ partA:		partA.o
 partA.o:	partA.c
 		$(CC) $(CFLAGS) -c partA.c
 		
-partB:		partB.o
-		$(CC) -o partB partB.o
+partB:		
+		gcc partB.c -o partB -lwiringPi
 
-partB.o:	partB.c
-		$(CC) $(CFLAGS) -c partB.c
-		
 clean:
 		rm -f *~ *.o partA partB
