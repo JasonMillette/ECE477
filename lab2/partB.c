@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 	//input can be entered as intiger, binary, octal or hex values using c syntax
 	
 	//variables used
-	int out, color = 0, color2 = 0;
+	int out = -1, color = 0, color2 = 0;
 	int mask = 0b00000001;
 	
 	//error checking on input arguments
@@ -57,6 +57,12 @@ int main(int argc, char *argv[]) {
 			sscanf(argv[1], "0%o\n", &out);
 	} else
 		sscanf(argv[1], "%d\n", &out);
+
+	//error check user input
+	if (out < 0) {
+		printf("partB needs a value to toggle LEDs, decimal, binary, octal or hex may be used, as well as a color red, blue or purple.\n./partB value color\n");
+		return 1;
+	}
 
 	//parses the second input for color choice
 	//r for red, b for blue and p for purple
