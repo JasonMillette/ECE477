@@ -1,16 +1,13 @@
 CC = gcc
 CFLAGS = -Wall -g
 
-all:	partA partB
+all:	lab2a partB
 
-partA:		partA.o
-		$(CC) -o partA partA.o
+lab2a:
+		gcc lab2a.c -o lab2a -lwiringPi
 
-partA.o:	partA.c
-		$(CC) $(CFLAGS) -c partA.c
-		
 partB:		
 		gcc partB.c -o partB -lwiringPi
 
 clean:
-		rm -f *~ *.o partA partB
+		rm -f *~ *.o lab2a partB

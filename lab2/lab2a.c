@@ -20,14 +20,14 @@ int main(int argc, char ** argv)
 		return 4;//exit program
 	}	
 	
-	int result,x;
+	int result;
 	//setup wiringPi
 	wiringPiSetup();
 	for (int i = 0; i < 8; i++)
 		pinMode(i,OUTPUT);
 	
 	//parse input for LED's
-/*	if (((argv[1][0]== '0')&&(argv[1][1]=='x')))//if input is in hex
+	if (((argv[1][0]== '0')&&(argv[1][1]=='x')))//if input is in hex
 	{
 		result = strtol(argv[1],NULL,16);
 	}
@@ -35,17 +35,7 @@ int main(int argc, char ** argv)
 	{
 		result = atoi(argv[1]);//if a number
 	}
-*/
 
-	if (argv[1][0] == '0')
-	{
-		if(argv[1][1] == 'x')
-			sscanf(argv[1],"0x%X\n", &result);
-		else
-			sscanf(argv[1], "0%o\n", &result);
-	}
-	else
-		sscanf(argv[1],"%d\n",&result);
 	
 
 	//turn on LED's based on value
