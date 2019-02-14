@@ -20,23 +20,36 @@ int main(int argc, char ** argv)
 		return 4;//exit program
 	}	
 	
-	int result;
+	int result,x;
 	//setup wiringPi
 	wiringPiSetup();
 	for (int i = 0; i < 8; i++)
 		pinMode(i,OUTPUT);
 	
 	//parse input for LED's
-	if (((argv[1][0]== '0')&&(argv[1][1]=='x')))//if input is in hex
+	//checks for leading 0 (hex or octal)
+	if (argv[1][0] == '0')
 	{
-		result = strtol(argv[1],NULL,16);
+		if(argv[1][1] == 'x')//check for x (hex)
+			sscanf(argv[1],"0x%X\n", &result);
+		else//octal
+			sscanf(argv[1], "0%o\n", &result);
 	}
+	else if (argv[1][0] == '-')//error check to see if negative number
+	{
+		printf("Error no negative numbers\n");
+		return 2;//exit
+	}	
 	else 
-	{
-		result = atoi(argv[1]);//if a number
-	}
-
+		sscanf(argv[1],"%d\n",&result);
 	
+
+	//check if input is more than 8 bits
+	if (result > 255)
+	{
+		printf("Error input too large\n");
+		return 5;//exit
+	}
 
 	//turn on LED's based on value
 	for(int i = 0; i < 8; i++)//once for each LED
