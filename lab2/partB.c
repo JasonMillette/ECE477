@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	if (argc > 4) {
+	if (argc > 3) {
 		printf("partB needs a value to toggle LEDs, decimal, binary, octal or hex may be used, as well as a color red, blue or purple.\n./partB value color\n");
 		return 1;
 	}
