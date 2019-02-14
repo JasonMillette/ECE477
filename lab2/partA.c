@@ -1,4 +1,5 @@
-//Steven Ferrarese
+//Lab 2
+//Spencer Goulette, Jason Millette, Steven Ferrarese
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
