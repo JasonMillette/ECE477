@@ -9,24 +9,26 @@
 
 
 int main(int argc, char *argv[]) {
-	//toggles LEDs on GPIO 1-7 based on user desired input from command line argument
-	//-help or -h returns instructions on usage
+	//toggles LEDs on GPIO 1-15 based on user desired input from command line argument
+	//the second argument chooses the color from red, blue or purple
 	//input can be entered as intiger, binary, octal or hex values using c syntax
 	
-	int out;
+	//variables used
+	int out, color = 0, color2 = 0;
 	int mask = 0b00000001;
 	
-	if (argc < 2) {
-		printf("partB needs a value to toggle LEDs, decimal, binary, octal or hex may be used.\n");
+	//error checking on input arguments
+	if (argc < 3) {
+		printf("partB needs a value to toggle LEDs, decimal, binary, octal or hex may be used, as well as a color red, blue or purple.\n./partB value color\n");
 		return 1;
 	}
 
-	if (argc > 3) {
-		printf("partB needs a value to toggle LEDs, decimal, binary, octal or hex may be used.\n");
+	if (argc > 4) {
+		printf("partB needs a value to toggle LEDs, decimal, binary, octal or hex may be used, as well as a color red, blue or purple.\n./partB value color\n");
 		return 1;
 	}
 
-	//sets up wiringpi
+	//sets up wiringpi pins for output
 	wiringPiSetup();
 	pinMode(0,OUTPUT);
 	pinMode(1,OUTPUT);
@@ -36,6 +38,14 @@ int main(int argc, char *argv[]) {
 	pinMode(5,OUTPUT);
 	pinMode(6,OUTPUT);
 	pinMode(7,OUTPUT);
+	pinMode(8,OUTPUT);
+	pinMode(9,OUTPUT);
+	pinMode(10,OUTPUT);
+	pinMode(11,OUTPUT);
+	pinMode(12,OUTPUT);
+	pinMode(13,OUTPUT);
+	pinMode(14,OUTPUT);
+	pinMode(15,OUTPUT);
 
 	//Parses input for desired LEDs
 	//checks which input method was used then saves the value to the int out
@@ -43,20 +53,43 @@ int main(int argc, char *argv[]) {
 		if (argv[1][1] == 'x') { //checks for x, for hex
 			sscanf(argv[1], "0x%X\n", &out);
 		}
-		else {
+		else 
 			sscanf(argv[1], "0%o\n", &out);
-		}
-	} else {
+	} else
 		sscanf(argv[1], "%d\n", &out);
+
+	//parses the second input for color choice
+	//r for red, b for blue and p for purple
+	if (argv[2][0] == 'b') { //checks for b in blue
+		color = 0;
+		color2 = 1;
+	}
+	else if (argv[2][0] == 'r') { //checks for r in red
+		color = 1;
+		color2 = 0;
+	}
+	else if (argv[2][0] == 'p') { //checks for p in purple
+		color = 2;
+	} else {
+		printf("enter a color red, blue or purple\n./partB value color\n");
+		return 2;
 	}
 	
 	//turns on LEDs based on value of out
 	//digitalWrite(pin, value);
-	for (int i=0; i < 8; i++) { //runs through loop for every LED
-		if (mask & out) {
-			digitalWrite(i, LOW);
+	for (int i=0; i < 16; i+=2) { //runs through loop for every LED
+		if ((mask & out) && (color != 2)) { //checks for non purple case and mask
+			digitalWrite(i+color, LOW);
+			digitalWrite(i+color2, HIGH);
+		} else if (color != 2) {
+			digitalWrite(i+color, HIGH);
+			digitalWrite(i+color2, HIGH);
 		}
-		else {
+		if ((mask & out) && (color == 2)) { //checks for purple case and mask
+			digitalWrite(i+1, LOW);
+			digitalWrite(i, LOW);
+		} else if (color == 2) {
+			digitalWrite(i+1, HIGH);
 			digitalWrite(i, HIGH);
 		}
 
