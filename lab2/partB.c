@@ -1,4 +1,4 @@
-//Jason Millette
+//Spencer Goulette, Steven Ferrarese, Jason Millette
 //ECE477 LAB2 blinking RGB LEDs
 //2/9/18
 
