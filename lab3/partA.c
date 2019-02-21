@@ -21,7 +21,7 @@ int main()
 	char loadavg[6];
 	while(1)
 	{
-		fopen(loadavg,5,ff);
+		fgets(loadavg,5,ff);
 		
 		input = atof(loadavg);	
 		
