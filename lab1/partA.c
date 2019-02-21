@@ -1,4 +1,4 @@
-//Jason Millette
+// Jason Millette, Spencer Goulette, Steven Ferrarese
 //1/31/19
 //Hello world program written for ECE477
 
