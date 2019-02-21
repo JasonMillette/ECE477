@@ -23,20 +23,17 @@ int main()
 
 	while(1) //infinite loop to check value every ten seconds and call led function
 	{
-<<<<<<< HEAD
 		fgets(loadavg, 420, ff); //gets the first 5 characters of the file
 		sscanf(loadavg, "%f ", &input);	//Converts string to float
 
 		printf("/proc/loadavg: %s\n1 minute load average: %lf\n", loadavg,input); //Prints variables for debugging
 
 		//Different cases for loadavg
-=======
 		fgets(loadavg,5,ff);
 		
 		input = atof(loadavg);	
 		
 		printf("%s\n%lf\n", loadavg,input);
->>>>>>> 5cedbc138634aa14c73997e21d9e020bfcc63906
 		if (input < 0.125)
 			system("./led 0x01");
 		else if (input < 0.25)
