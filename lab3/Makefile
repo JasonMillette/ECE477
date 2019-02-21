@@ -1,13 +1,13 @@
 CC = gcc
 CFLAGS = -Wall -g
 
-all:	lab2a partB
+all:	led partA
 
-lab2a:
-		gcc lab2a.c -o lab2a -lwiringPi
+led:
+		gcc led.c -o led -lwiringPi
 
-partB:		
-		gcc partB.c -o partB -lwiringPi
+partA:		
+		gcc partA.c -o partA -lwiringPi
 
 clean:
-		rm -f *~ *.o lab2a partB
+		rm -f *~ *.o led partA
