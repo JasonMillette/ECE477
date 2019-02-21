@@ -10,30 +10,31 @@ int main()
 {
 	//Opening /proc/loadavg to read the 1 minute load average
 	FILE *ff;
-	ff = fopen("/proc/stat", "r");
-	if (ff < 0) //error checking on file open
-	{
-		printf("Error opening program\n");
-		return 4;
-	}
-
-	//float value and string
-	float input = 0;
-	char loadavg[1000];
-
+	//int value and string
+	int input = 0;
+	char line[256];
+	size_t * xx ;
 	while(1) //infinite loop to check value every ten seconds and call led function
 	{
-		fgets(loadavg, 1000, ff); //gets the first 5 characters of the file
-		sscanf(loadavg, "proc_running %lf", &input);	//Converts string to float
 		
-		printf("process running %lf\n",input); //Prints variables for debugging
+		
+		ff = fopen("/proc/stat", "r");//open file	
+		if(ff < 0)//error check on file open
+		{
+			printf("error opening program\n");
+			return 4;//end program
+		}
+		
+		for (int i = 0; i < 11 ; i++)//go to 11th line and save it
+			fgets(line, sizeof(line),ff);
 	
-		//Different cases for loadavg
-		fgets(loadavg,5,ff);
+		fclose(ff);//close file
 		
-		input = atof(loadavg);	
-		
-		printf("%s\n%lf\n", loadavg,input);
+		sscanf(line, "procs_running %d", &input);//get number of processing running from line
+		printf("%s  %d\n",line,input);//print out output
+
+
+		//print the number of process running 
 		if (input == 1)
 			system("./led 0x01");
 		else if (input == 2)
@@ -51,9 +52,8 @@ int main()
 		else if (input == 8)
 			system("./led 0xFF");
 		
-		sleep(10);
+		sleep(10);//delay 10 seconds
 	}
-	fclose(ff);
 	return 0;
 }
 
