@@ -1,4 +1,4 @@
-//ECE477 Lab3
+//ECE477 Lab3 partB
 //2/21/19
 //Jason Millette, Spencer Goulette, Steven Ferrarese
 
