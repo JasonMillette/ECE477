@@ -5,25 +5,29 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
+#include<wiringPi.h>
 
 int main()
 {
 	char buffer[12];
-	int delay = 1024;
+	unsigned long int delay = 0x400;
 	int direction = 0;
-	unsigned int lights = 0x01;
+	unsigned int lights = 0x001;
+	int prevButtonA = 0;
+	int prevButtonB = 0;
 
-	wiringpisetup();
+	wiringPiSetup();
 
-	pinmode(8,IN);
-	pinmode(9,IN);
+	pinMode(8,INPUT);
+	pinMode(9,INPUT);
+
+	pullUpDnControl(8,PUD_UP);
+	pullUpDnControl(9,PUD_UP);
 
 	while(1)
 	{
 		snprintf(buffer, sizeof(buffer), "./led %d", lights);
 		system(buffer);
-		
-		usleep(1000 * delay);
 
 		if(direction == 0)
 		{
@@ -33,41 +37,58 @@ int main()
 		{
 			lights >>= 1;
 		}
-		
-		if(lights > 0xFF)
+	
+		if(lights > 0x80)
 		{
-			lights = 0x01;
+			lights = 0x001;
 		}
-		if(lights < 0x01)
+		else if(lights < 0x01)
 		{
-			lights = 0xFF;
+			lights = 0x080;
 		}
+	
+		for(int i = 0; i < delay; i++)
+		{
+			usleep(1000);
 
-		if(button a)
-		{
-			if(delay != 32)
+			if(prevButtonA == 0 && digitalRead(8) == LOW) 
 			{
-				delay >>= 1;
+				prevButtonA = 1;
+				if(delay != 32)
+				{
+					delay >>= 1;
+				}
+				else
+				{
+					direction = !direction;
+				}
 			}
-			else
+			else if(prevButtonA == 1 && digitalRead(8) == HIGH)
 			{
-				direction != direction;
+				prevButtonA = 0;
 			}
-		}
-		if(button b)
-		{
-			if(delay != 1024)
+
+			if(prevButtonB == 0 && digitalRead(9) == LOW)
 			{
-				delay <<= 1;
+				prevButtonB = 1;
+				if(delay != 1024)
+				{
+					delay <<= 1;
+				}
+				else
+				{
+					direction = !direction;
+				}
 			}
-			else
+			else if(prevButtonB == 1 && digitalRead(9) == HIGH)
 			{
-				direction != direction;
+				prevButtonB = 0;
 			}
-		}
-		if(button a && button b)
-		{
-			return 0;
+
+			if(prevButtonA == 0 && prevButtonB == 0 && digitalRead(8) == LOW && digitalRead(9) == LOW)
+			{
+				return 0;
+			}
 		}
 	}
 
