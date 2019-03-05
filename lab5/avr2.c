@@ -1,5 +1,4 @@
-int value = 82;
-
+int value = 128;
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
