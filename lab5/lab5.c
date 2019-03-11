@@ -27,7 +27,7 @@ int main() {
 	//Variables
 	double time[2];
 	double frequency, avgFreq = 0, totalTime = 0;
-	int clock = 128;
+	int clock = 10, dir = 0, run = 0;
 	
 	while(1) {
 
@@ -63,6 +63,14 @@ int main() {
 		avgFreq = 0;
 		printf("Frequency: %lf\n", frequency);
 
+		if(run == 0) {
+			run = 1;
+			if (frequency < 100)
+				dir = 0;
+			else
+				dir = 1;
+		}
+
 		//Adjusting clock
 		if(frequency < 100.5)
 			clock++;
@@ -81,7 +89,8 @@ int main() {
 		}
 
 		//changing avr code to adjust clock
-		fprintf(ff, "int value = %d;\n", clock);
+		fprintf(ff, "int value = %d, dir = %d;\n", clock, dir);
+		printf("int value = %d, dir = %d;\n", clock, dir);
 		fclose(ff);
 
 		//recompiling and flashing the board

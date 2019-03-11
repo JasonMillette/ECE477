@@ -1,4 +1,4 @@
-int value = 82;
+int value = 60, dir = 1;
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -28,6 +28,8 @@ void update_clock_speed(void);
 
 int main()
 {
+  eeprom_write_byte((void *)0, value);
+  eeprom_write_byte((void *)1, dir);
   update_clock_speed();  //adjust OSCCAL
   init_pwm();            //set up hardware PWM
   while(1);              //literally nothing left to do
@@ -40,7 +42,23 @@ int main()
 // adjust the oscillator beyond safe operating bounds.
 void update_clock_speed(void)
 {
-  OSCCAL = value;
+  char temp;
+  temp=eeprom_read_byte((void *)1); //read oscillator offset sign 
+                                    //0 is positive 1 is  negative
+                                    //erased reads as ff (so avoid that)
+  if(temp==0||temp==1)      //if sign is invalid, don't change oscillator
+  {
+      if(temp==0)
+	  {
+	     temp=eeprom_read_byte((void *)0);
+		 if(temp != 0xff) OSCCAL+=temp;
+	  }
+	  else
+	  {
+	     temp=eeprom_read_byte((void *)0);
+		 if(temp!=0xff) OSCCAL -=temp;
+	  }
+  }
 }
 
 
