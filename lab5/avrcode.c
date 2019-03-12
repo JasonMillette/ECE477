@@ -1,5 +1,4 @@
-int value = 60, dir = 1;
-
+int value = 5, dir = 1;
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>

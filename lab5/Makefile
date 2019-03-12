@@ -9,7 +9,7 @@ fuse:
 flash:
 	avr-gcc -mmcu=atmega88 avrcode.c
 	avr-objcopy -j .text -j .data -O ihex a.out a.hex
-	sudo avrdude -D -C ~/avrdude_gpio.conf -c pi_1 -p atmega88 -U flash:w:a.hex:i
+	sudo avrdude -C ~/avrdude_gpio.conf -c pi_1 -p atmega88 -U flash:w:a.hex:i
 
 terminal:
 	sudo avrdude -C ~/avrdude_gpio.conf -c pi_1 -p atmega88 -t
