@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #define F_CPU 1000000UL
-#include <util/delay.h>
+//#include <util/delay.h>
 
 
 int serial_putchar(char, FILE*);
@@ -34,7 +34,8 @@ void do_high_low(void);
 int main()
 {
 	init_serial();
-	_delay_ms(2000);
+	//_delay_ms(2000);
+	for(int i = 0; i < 100000;i++);
 	while(1)
 		do_high_low();
 
