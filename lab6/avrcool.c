@@ -60,31 +60,32 @@ void init_serial(void)
 void do_high_low(void)
 {
 	FILE *fp, *fpr;
-	int answer, guess;
+	int answer, guessi, score = 0;
 	
 	answer = rand()%10000;
 	fp = stdout;
 	fpr = stdin;
 
-	fprintf(fp, "Welcome to the High low Game!! \r\n");
+	fprintf(fp, "Welcome to the Math Game!! \r\n");
 		
-	fprintf(fp, "Enter an int between 0 and 10000: \r\n");
 	
 	fflush(fp);
 
 	while (guess!=answer)
 	{
-		
+		answer = rand()%25; 
+
+		fprintf(fp\ri,"\r\nWhat is %d squared: ");
 		while (fscanf(fpr,"%d",&guess) != 1) 
-			fscanf(fpr,"%*s");		
-		if(guess<answer) 
-			fprintf(fp,"Too low!! Try again");
-
-		else if(guess > answer)
-			fprintf(fp,"You got to High! Try again");
-
+			fscanf(fpr,"%*s");
+		
+		if(guess==(answer*answer)) 
+		{
+			score ++;
+			fprintf(fp,"\r\nCorrect you are smart, Score %d",score);
+		}
 		else 
-			fprintf(fp,"Congrats You got it!");
+			fprintf(fp,"WRONG Play again!!\r\n");
 
 		fflush(fp);
 	

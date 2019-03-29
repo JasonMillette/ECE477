@@ -75,8 +75,8 @@ void do_high_low(void)
 	while (guess!=answer)
 	{
 		
-		while (fscanf(fpr,"%d",&guess) != 1) 
-			fscanf(fpr,"%*s");		
+		while (fscanf(fpr,"%d",&guess) != 1) ;
+		
 		if(guess<answer) 
 			fprintf(fp,"Too low!! Try again");
 
