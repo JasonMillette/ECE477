@@ -48,6 +48,10 @@ void from_to(int f1, int f2)
     struct termios tc;                // terminal control structure
 
     fd1 = open("/dev/ttyS0", O_RDWR|O_NOCTTY);  // really ought to check for error
+    if(fd1 < 0) {
+	    fprintf("Error opening terminal device\n");
+	    return 1;
+    }
     tcgetattr(fd1, &tc); //gets the attributes of the terminal device and sets it to the structure
     tc.c_iflag = IGNPAR; //sets flag to ingore the parity and framing errors 
     tc.c_oflag = 0; //clears all flags pertaining to how the system handles outputs
