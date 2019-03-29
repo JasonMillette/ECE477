@@ -34,7 +34,7 @@ int main()
 	init_serial();
 	_delay_ms(2000);
 	
-	//while(1)
+	while(1)//do forever
 		do_high_low();
 
 	return 0 ;
@@ -75,16 +75,16 @@ void do_high_low(void)
 	while (guess!=answer)
 	{
 		
-		while (fscanf(fpr,"%d",&guess) != 1) 
+		while (fscanf(fpr,"%d",&guess) != 1) //get answer from user
 			fscanf(fpr,"%*s");		
 		if(guess<answer) 
-			fprintf(fp,"Too low!! Try again");
+			fprintf(fp,"\r\nToo low!! Try again\r\n");
 
 		else if(guess > answer)
-			fprintf(fp,"You got to High! Try again");
+			fprintf(fp,"\r\nYou got to High! Try again\r\n");
 
 		else 
-			fprintf(fp,"Congrats You got it!");
+			fprintf(fp,"\r\nCongrats You got it!\r\n");
 
 		fflush(fp);
 	

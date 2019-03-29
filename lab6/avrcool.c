@@ -34,7 +34,8 @@ int main()
 	init_serial();
 	_delay_ms(2000);
 	
-	//while(1)
+	//forever
+	while(1)
 		do_high_low();
 
 	return 0 ;
@@ -71,7 +72,7 @@ void do_high_low(void)
 	
 	fflush(fp);
 
-	while (guess!=answer)
+	while (guess!=answer*answer)
 	{
 		answer = rand()%25; 
 
@@ -79,9 +80,10 @@ void do_high_low(void)
 		while (fscanf(fpr,"%d",&guess) != 1) 
 			fscanf(fpr,"%*s");
 		
+		//see if correct anser and keep track of score 
 		if(guess==(answer*answer)) 
 		{
-			score ++;
+			score ++;//keep track of score
 			fprintf(fp,"\r\nCorrect you are smart, Score %d",score);
 		}
 		else 
