@@ -1,3 +1,7 @@
+//ECE486 Lab6
+//3/29/19
+//Jason Millette, Spencer Goulette, Steven Ferrarese
+//Credits, Bruce Segee
 #include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
@@ -12,50 +16,46 @@ int init(void);
 
 
  int main()
-// todo command line arguments
- { int fd1;
+ { int fd1; //variables
    char buf[1000];
    setup_stdin();
    fd1=init();
-//todo make sure fd1 is ok
+   //Forks for reading from stdin and from UART
    if(fork()) from_to(fd1,1);
    else from_to(0,fd1);
 
-   //todo sure would be nice to have an exit condition
-     return 1;
-
+   return 1;
  }
 
- void setup_stdin(void)
- { struct termios tc;
-   tcgetattr(0, &tc);
-   tc.c_lflag &=~ICANON ;
-   tc.c_lflag |=ECHO;
-   tcsetattr(0, TCSANOW, &tc);
+void setup_stdin(void)
+//Sets up serial communication from stdin to the AVR
+{ struct termios tc; //Creates termios structure
+   tcgetattr(0, &tc); //gets the attributes of the terminal device and sets it to the structure
+   tc.c_lflag &=~ICANON ; //disables canonical mode
+   tc.c_lflag |=ECHO; //enables echo
+   tcsetattr(0, TCSANOW, &tc); //writes out the attributes to the terminal device
 }
 
 
 void from_to(int f1, int f2)
+//Sends data either to the AVR from stdin or from the AVR to stdout.
 {  char c;
-   while(1) if(read(f1,&c,1))write(f2,&c,1);  }
+   while(1) if(read(f1,&c,1))write(f2,&c,1);  } //waits for input either from stdin or AVR
 
   int  init()
   {
     int fd1;
     struct termios tc;                // terminal control structure
 
-    //todo serial port should not be hard coded
     fd1 = open("/dev/ttyS0", O_RDWR|O_NOCTTY);  // really ought to check for error
-    tcgetattr(fd1, &tc);
-    tc.c_iflag = IGNPAR;
-    tc.c_oflag = 0;
+    tcgetattr(fd1, &tc); //gets the attributes of the terminal device and sets it to the structure
+    tc.c_iflag = IGNPAR; //sets flag to ingore the parity and framing errors 
+    tc.c_oflag = 0; //clears all flags pertaining to how the system handles outputs
     tc.c_cflag = CSTOPB | CS8 | CREAD | CLOCAL; //8 bit chars enable receiver no modem status lines
-    tc.c_lflag =0 ;
+    tc.c_lflag =0 ; //clears all flags pertaining to various terminal functions
 
-    //todo baud rate should not be hard coded
-    cfsetispeed(&tc, B1200);
+    cfsetispeed(&tc, B1200); //Sets the input and output baud rates
     cfsetospeed(&tc, B1200);
-    //todo should have bits per character set
-    tcsetattr(fd1, TCSANOW, &tc);
-  return fd1;
+    tcsetattr(fd1, TCSANOW, &tc); //writes out the attributes to the terminal device
+  return fd1; //returns terminal device file
  }
