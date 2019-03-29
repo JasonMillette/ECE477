@@ -61,22 +61,20 @@ void init_serial(void)
 void do_high_low(void)
 {
 	FILE *fp, *fpr;
-	int answer, guessi, score = 0;
+	int answer, guess, score = 0;
 	
 	answer = rand()%10000;
 	fp = stdout;
 	fpr = stdin;
-
+	
+	//tell user game has started 
 	fprintf(fp, "Welcome to the Math Game!! \r\n");
 		
-	
-	fflush(fp);
-
-	while (guess!=answer*answer)
+	while (guess!=answer*answer)//run till user gets correct answer
 	{
 		answer = rand()%25; 
 
-		fprintf(fp\ri,"\r\nWhat is %d squared: ");
+		fprintf(fp,"\r\nWhat is %d squared: ");
 		while (fscanf(fpr,"%d",&guess) != 1) 
 			fscanf(fpr,"%*s");
 		
@@ -88,9 +86,6 @@ void do_high_low(void)
 		}
 		else 
 			fprintf(fp,"WRONG Play again!!\r\n");
-
-		fflush(fp);
-	
 	}
 
 }

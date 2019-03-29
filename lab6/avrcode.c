@@ -66,13 +66,12 @@ void do_high_low(void)
 	fp = stdout;
 	fpr = stdin;
 
-	fprintf(fp, "Welcome to the High low Game!! \r\n");
+	//print out to tell user game has starteed
+	fprintf(fp, "\r\nWelcome to the High low Game!! \r\n");
 		
 	fprintf(fp, "Enter an int between 0 and 10000: \r\n");
-	
-	fflush(fp);
 
-	while (guess!=answer)
+	while (guess!=answer)//go till user gets correct answer
 	{
 		
 		while (fscanf(fpr,"%d",&guess) != 1) //get answer from user
@@ -82,12 +81,8 @@ void do_high_low(void)
 
 		else if(guess > answer)
 			fprintf(fp,"\r\nYou got to High! Try again\r\n");
-
 		else 
 			fprintf(fp,"\r\nCongrats You got it!\r\n");
-
-		fflush(fp);
-	
 	}
 
 }
