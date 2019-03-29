@@ -66,6 +66,17 @@ void do_high_low(void)
 	fp = stdout;
 	fpr = stdin;
 
+	if (fp < 0)
+	{
+		
+		return;//can not print out through UART so will just exit on code 4
+	}
+	if (fpr < 0)
+	{
+		fprintf(fp,"Error opening file");//UART transmit is good just not recice 
+		return; // end on code 
+	}
+
 	//print out to tell user game has starteed
 	fprintf(fp, "\r\nWelcome to the High low Game!! \r\n");
 		
@@ -76,9 +87,11 @@ void do_high_low(void)
 		
 		while (fscanf(fpr,"%d",&guess) != 1) //get answer from user
 			fscanf(fpr,"%*s");		
-		if(guess<answer) 
+		
+		if ((guess > 10000)||(guess < 0))
+			fprintf(fp, "\r\nNumber needs to be between 0 and 10000, Try again!");
+		else if(guess<answer) 
 			fprintf(fp,"\r\nToo low!! Try again\r\n");
-
 		else if(guess > answer)
 			fprintf(fp,"\r\nYou got to High! Try again\r\n");
 		else 
