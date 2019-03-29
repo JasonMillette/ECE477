@@ -16,7 +16,7 @@ int serial_getchar(FILE *);
 static FILE serial_stream = FDEV_SETUP_STREAM (serial_putchar, serial_getchar, _FDEV_SETUP_RW);
 
 void init_serial(void);
-void do_high_low(void);
+void do_math_game(void);
 void update_clock_speed(void);
 
 //main first calls update_clock_speed to make the adjustments to
@@ -36,7 +36,7 @@ int main()
 	
 	//forever
 	while(1)
-		do_high_low();
+		do_math_game();
 
 	return 0 ;
 
@@ -58,12 +58,11 @@ void init_serial(void)
 //High log game c
 //randomly generates number and had User guess it and telling them lower or higher
 //
-void do_high_low(void)
+void do_math_game(void)
 {
 	FILE *fp, *fpr;
-	int answer, guess, score = 0;
+	int answer = 1, guess = 50, score = 0;
 	
-	answer = rand()%10000;
 	fp = stdout;
 	fpr = stdin;
 	
@@ -72,11 +71,12 @@ void do_high_low(void)
 		
 	while (guess!=answer*answer)//run till user gets correct answer
 	{
+		//get random number for game
 		answer = rand()%25; 
 
-		fprintf(fp,"\r\nWhat is %d squared: ");
+		fprintf(fp,"\r\nWhat is %d squared: ", answer);
 		while (fscanf(fpr,"%d",&guess) != 1) 
-			fscanf(fpr,"%*s");
+			fscanf(fpr,"%*s");//get input from user
 		
 		//see if correct anser and keep track of score 
 		if(guess==(answer*answer)) 
