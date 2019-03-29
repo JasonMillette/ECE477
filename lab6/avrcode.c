@@ -53,7 +53,7 @@ int main()
 void init_serial(void)
 {
 	UBRR0H=0;
-	UBRR0L=12;
+	UBRR0L=25;
 	UCSR0A = 1<<U2X0;
 	UCSR0C = (1<<USBS0)|(3<<UCSZ00);
 	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
@@ -79,7 +79,7 @@ void do_high_low(void)
 
 //	while (guess!=answer)
 	{
-		while (fscanf(fpr,"%d",&guess) != 1) fscanf(fpr, "%s*s");
+//		while (fscanf(fpr,"%d",&guess) != 1) fscanf(fpr, "%s*s");
 
 		if(guess<answer) 
 			fprintf(fp,"Too low, you need WEED");
