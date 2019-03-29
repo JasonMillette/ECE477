@@ -30,7 +30,7 @@ int init(void);
  { struct termios tc;
    tcgetattr(0, &tc);
    tc.c_lflag &=~ICANON ;
-   tc.c_lflag &=~ECHO;
+   tc.c_lflag |=ECHO;
    tcsetattr(0, TCSANOW, &tc);
 }
 
@@ -53,8 +53,8 @@ void from_to(int f1, int f2)
     tc.c_lflag =0 ;
 
     //todo baud rate should not be hard coded
-    cfsetispeed(&tc, B2400);
-    cfsetospeed(&tc, B2400);
+    cfsetispeed(&tc, B1200);
+    cfsetospeed(&tc, B1200);
     //todo should have bits per character set
     tcsetattr(fd1, TCSANOW, &tc);
   return fd1;
