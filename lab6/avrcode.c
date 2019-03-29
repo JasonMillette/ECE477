@@ -44,7 +44,7 @@ int main()
 //initializes the AVR USART for 1200 Baud with 8MHz clock
 void init_serial(void)
 {
-	UBRR0H=828>>8;
+	UBRR0H=832>>8;
 	UBRR0L=127;
 	UCSR0A = 1<<U2X0;
 	UCSR0C = (1<<USBS0)|(3<<UCSZ00);//8 bit, no parity and 2 stop
