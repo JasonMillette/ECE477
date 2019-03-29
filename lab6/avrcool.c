@@ -72,18 +72,20 @@ void do_math_game(void)
 	while (guess!=answer*answer)//run till user gets correct answer
 	{
 		//get random number for game
-		answer = rand()%25; 
-
+		answer = rand()%25; wil
 		fprintf(fp,"\r\nWhat is %d squared: ", answer);
 		while (fscanf(fpr,"%d",&guess) != 1) 
 			fscanf(fpr,"%*s");//get input from user
 		
 		//see if correct anser and keep track of score 
+		
 		if(guess==(answer*answer)) 
 		{
 			score ++;//keep track of score
 			fprintf(fp,"\r\nCorrect you are smart, Score %d",score);
 		}
+		else if ((guess > 625)||(guess < 0))//max is 625 for 25^2 
+			fprintf(fp, "\r\nNumber needs to be between 0 and 625, Try again!");
 		else 
 			fprintf(fp,"WRONG Play again!!\r\n");
 	}
