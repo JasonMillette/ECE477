@@ -4,18 +4,17 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-//#define __OPTIMIZE__ 2
+#define __OPTIMIZE__ 2
+#define F_CPU 1000000UL
 #include <util/delay.h>
 #include <math.h>
-
-#define F_CPU 1000000UL
 
 int serial_putchar(char, FILE*);
 int serial_getchar(FILE *);
 static FILE serial_stream = FDEV_SETUP_STREAM (serial_putchar, serial_getchar, _FDEV_SETUP_RW);
 
 void init_serial(void);
-void printInternalTemp(FILE *fp);
+void printInternalTemp(void);
 void update_clock_speed(void);
 void init_ADC(void);
 int read_ADC(void);
@@ -33,19 +32,7 @@ int main()
 	init_serial();
 	init_ADC();
 	_delay_ms(2000);
-
-	//opens file for serial out
-	FILE *fp;
-	fp = stdout;
-
-	while(1) {
-		printInternalTemp(fp);
-		_delay_ms(500);
-	}
 	
-	//close file
-	fclose(fp);
-
 	return 0;
 }
 
@@ -105,11 +92,14 @@ int read_ADC(void) {
 	return ADC;
 }
 //Example mosetly from class
-void printInternalTemp(FILE *fp) {
+void printInternalTemp(void) {
 	//Prints to serial out the internal temperature
 	//usingn the internal temperature sensor
 	//1.1V reference and ADC
 
+	//opens file for serial out
+	FILE *fp;
+	fp = stdout;
 
 	//Get value from the ADC
 	float temperature = read_ADC();
@@ -117,9 +107,11 @@ void printInternalTemp(FILE *fp) {
 	//Convert to F and print temperature
 	fprintf(fp,"\r\nInternal Temperature: %fF", (((temperature-247)/1.22)*1.8)+32);
 
+	//close file
+	fclose(fp);
+
 	return;
 }
-
 int serial_putchar(char val, FILE * fp) {
 	//waits until UDR is empty and puts char
 
@@ -128,7 +120,6 @@ int serial_putchar(char val, FILE * fp) {
 	return 0;
 
 }
-
 int serial_getchar(FILE *fp) {
 	//waits until a char is avaailable and reads it 
 	//if block read it will wait forever for a char
@@ -138,7 +129,6 @@ int serial_getchar(FILE *fp) {
 	return UDR0;
 
 }
-
 void update_clock_speed(void) {
 	//updating the clock speed 
   char temp;
