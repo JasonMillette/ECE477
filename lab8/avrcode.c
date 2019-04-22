@@ -21,18 +21,15 @@ void init_ADC(void);
 int read_ADC(void);
 
 //main first calls update_clock_speed to make the adjustments to
-//the oscillator calibration and then calls init_pwm to set up 
-//a 100Hz 50% duty cycle square wave on OC1A (pin 15 on the 28 pin 
-//DIP package).
-//This a high_low program runnin on the AVR chip
-//it sets up the seial communication for 1200 baud
+//callibrate the clock. It then initializes UART communication with
+//a raspberry pi. After the serial connection is made the ADC is
+//initialized for the internal temp sensor.
 
 int main()
 {
   	update_clock_speed();  //adjust OSCCAL
 	init_serial();
 	init_ADC();
-	_delay_ms(2000);
 
 	//opens file for serial out
 	FILE *fp;
@@ -115,7 +112,7 @@ void printInternalTemp(FILE *fp) {
 	float temperature = read_ADC();
 
 	//Convert to F and print temperature
-	fprintf(fp,"\r\nInternal Temperature: %fF", (((temperature-247)/1.22)*1.8)+32);
+	fprintf(fp,"%f; ", (temperature-247)/1.22);
 
 	return;
 }
