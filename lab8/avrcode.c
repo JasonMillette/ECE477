@@ -67,10 +67,13 @@ void init_ADC(void) {
 	ADMUX = 0;
 
 	//1.1V internal chosen as single input
-	ADMUX |= (1<<MUX3)|(0<<MUX2)|(0<<MUX1)|(0<<MUX0);
+	ADMUX |= (1<<REFS1)|(1<<REFS0);
 
 	//internal temp sensor chosen as the reference voltage
-	ADMUX |= (1<<REFS1)|(1<<REFS0);
+	//ADMUX |= (1<<MUX3)|(0<<MUX2)|(0<<MUX1)|(0<<MUX0);
+
+	//external reference voltage chosen for external temp sensor
+	ADMUX |= (0<<MUX3)|(1<<MUX2)|(0<<MUX1)|(1<<MUX0); //ADC5
 
 	//the two MSB in ADCH, the 8 LSB in ADCL
 	ADMUX |= (0<<ADLAR);
@@ -111,8 +114,11 @@ void printInternalTemp(FILE *fp) {
 	//Get value from the ADC
 	float temperature = read_ADC();
 
-	//Convert to F and print temperature
-	fprintf(fp,"%f; ", (temperature-247)/1.22);
+	//Convert to C and print temperature from internal
+	//fprintf(fp,"%f; ", (temperature-247)/1.22);
+
+	//Convert to C and print temperature from external
+	fprintf(fp,"%f; ", (temperature) * (3300/102400.0));
 
 	return;
 }
