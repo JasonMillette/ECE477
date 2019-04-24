@@ -30,6 +30,7 @@ int main() {
 
 		if (!(strcmp(userInput, "quit"))) { //checks for quit condition
 			softPwmWrite(0, 0);	//turns off motor before exiting program
+			digitalWrite(1, LOW);	//turns off the enable line
 			return 0;
 		}
 		
