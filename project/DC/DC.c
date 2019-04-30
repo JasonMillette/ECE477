@@ -46,8 +46,8 @@ int main() {
 		}
 		
 		//Sets GPIO pins based on user input with wiringpi
-		digitalWrite(1, HIGH);	//enables motor 1
 		softPwmWrite(0, pwm);	//sets pwm% PWM
+		digitalWrite(1, HIGH);	//enables motor 1
 
 		printf("\n\n");	//Adds newlines for easier to read output
 	}
